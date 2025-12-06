@@ -1,4 +1,4 @@
-# <img width="44" height="44" alt="poke_pika" src="https://github.com/user-attachments/assets/fb1bafa1-5e92-4369-bdcb-eb934510173f" /> PokeAPI Testing Project
+# <img width="34" height="34" alt="poke_pika" src="https://github.com/user-attachments/assets/fb1bafa1-5e92-4369-bdcb-eb934510173f" /> PokeAPI Testing Project
 
 This project demonstrates API testing using **pytest**, **Python requests**, and **PokeAPI** — a large, fun, public REST API based on Pokémon data.
 
@@ -15,8 +15,6 @@ It includes:
 ---
 
 ## 🚀 Installing Dependencies
-
-<<<<<<< Updated upstream
 
 Install dependencies:
 =======
