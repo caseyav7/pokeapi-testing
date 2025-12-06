@@ -35,3 +35,23 @@ def test_pokemon_list_pagination(poke_client, limit, offset):
 
     results = resp.json()["results"]
     assert len(results) <= limit
+
+def test_first_list_entry_matches_details(poke_client):
+    resp_list = poke_client.get_pokemon_list(limit=5, offset=0)
+    assert resp_list.status_code == 200
+
+    data = resp_list.json()
+    first_entry = data["results"][0]
+
+    # The first entry should have a name and a url
+    list_name  = first_entry["name"]
+    list_url = first_entry["url"]
+    assert list_name, list_url
+
+    # Call the detail endpoint using the API client by name
+    resp_detail = poke_client.get_pokemon(list_name)
+    assert resp_detail.status_code == 200
+
+    detail_data = resp_detail.json()
+    # The name from the detail endpoint should match the list entry
+    assert detail_data["name"] == list_name
