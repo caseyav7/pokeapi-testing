@@ -1,0 +1,43 @@
+Feature: PokeAPI - Pokemon endpoints # features/pokemon_api.feature:1
+  As a QA engineer
+  I want to validate the Pokemon endpoints of PokeAPI
+  So that I can ensure basic functionality and responses are correct
+  Scenario: Get default list of Pokemon                         # features/pokemon_api.feature:6
+    When I request the default Pokemon list                     # features/steps/pokemon_steps.py:11
+    Then the response status code should be 200                 # features/steps/pokemon_steps.py:29
+    And the response should contain a non-empty "results" array # features/steps/pokemon_steps.py:37
+
+  Scenario Outline: Get Pokemon by name -- @1.1            # features/pokemon_api.feature:18
+    When I request the Pokemon with name "pikachu"         # features/steps/pokemon_steps.py:17
+    Then the response status code should be 200            # features/steps/pokemon_steps.py:29
+    And the response JSON "name" field should be "pikachu" # features/steps/pokemon_steps.py:45
+
+  Scenario Outline: Get Pokemon by name -- @1.2              # features/pokemon_api.feature:19
+    When I request the Pokemon with name "bulbasaur"         # features/steps/pokemon_steps.py:17
+    Then the response status code should be 200              # features/steps/pokemon_steps.py:29
+    And the response JSON "name" field should be "bulbasaur" # features/steps/pokemon_steps.py:45
+
+  Scenario Outline: Get Pokemon by name -- @1.3               # features/pokemon_api.feature:20
+    When I request the Pokemon with name "charmander"         # features/steps/pokemon_steps.py:17
+    Then the response status code should be 200               # features/steps/pokemon_steps.py:29
+    And the response JSON "name" field should be "charmander" # features/steps/pokemon_steps.py:45
+
+  Scenario Outline: Get Pokemon by id -- @1.1    # features/pokemon_api.feature:29
+    When I request the Pokemon with id "1"       # features/steps/pokemon_steps.py:23
+    Then the response status code should be 200  # features/steps/pokemon_steps.py:29
+    And the response JSON "id" field should be 1 # features/steps/pokemon_steps.py:52
+
+  Scenario Outline: Get Pokemon by id -- @1.2    # features/pokemon_api.feature:30
+    When I request the Pokemon with id "4"       # features/steps/pokemon_steps.py:23
+    Then the response status code should be 200  # features/steps/pokemon_steps.py:29
+    And the response JSON "id" field should be 4 # features/steps/pokemon_steps.py:52
+
+  Scenario Outline: Get Pokemon by id -- @1.3     # features/pokemon_api.feature:31
+    When I request the Pokemon with id "25"       # features/steps/pokemon_steps.py:23
+    Then the response status code should be 200   # features/steps/pokemon_steps.py:29
+    And the response JSON "id" field should be 25 # features/steps/pokemon_steps.py:52
+
+  Scenario: Non-existent Pokemon should return 404                  # features/pokemon_api.feature:33
+    When I request the Pokemon with name "definitely-not-real-9999" # features/steps/pokemon_steps.py:17
+    Then the response status code should be 404                     # features/steps/pokemon_steps.py:29
+
