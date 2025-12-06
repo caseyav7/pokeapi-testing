@@ -90,6 +90,7 @@ pokeapi-testing/
 │
 └── behave.ini
 ```
+<p align="center" width="100%">
 ![f6380a894311292381521264bd8a9c22](https://github.com/user-attachments/assets/b26ff81d-d631-45f2-8018-3addfe3700a1)
-
+</p>
 
