@@ -19,7 +19,6 @@ It includes:
 Install dependencies:
 =======
 Install all required packages:
->>>>>>> Stashed changes
 
 ```bash
 pip install -r requirements.txt
