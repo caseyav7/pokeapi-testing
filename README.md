@@ -16,8 +16,6 @@ It includes:
 
 ## 🚀 Installing Dependencies
 
-Install dependencies:
-=======
 Install all required packages:
 
 ```bash
