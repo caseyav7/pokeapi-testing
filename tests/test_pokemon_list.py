@@ -1,3 +1,7 @@
+import pytest
+
+@pytest.mark.smoke
+@pytest.mark.regression
 def test_get_pokemon_list_default(poke_client):
     resp = poke_client.get_pokemon_list()
     assert resp.status_code == 200
@@ -8,7 +12,7 @@ def test_get_pokemon_list_default(poke_client):
     assert isinstance(data["results"], list)
     assert len(data["results"]) > 0
 
-
+@pytest.mark.regression
 def test_list_pokemon_structure(poke_client):
     """
     Ensure each entry in results has name + url.
@@ -24,6 +28,7 @@ def test_list_pokemon_structure(poke_client):
 
 import pytest
 
+@pytest.mark.regression
 @pytest.mark.parametrize("limit,offset", [
     (5, 0),
     (10, 20),
@@ -36,6 +41,7 @@ def test_pokemon_list_pagination(poke_client, limit, offset):
     results = resp.json()["results"]
     assert len(results) <= limit
 
+@pytest.mark.regression
 def test_first_list_entry_matches_details(poke_client):
     resp_list = poke_client.get_pokemon_list(limit=5, offset=0)
     assert resp_list.status_code == 200
@@ -55,3 +61,15 @@ def test_first_list_entry_matches_details(poke_client):
     detail_data = resp_detail.json()
     # The name from the detail endpoint should match the list entry
     assert detail_data["name"] == list_name
+
+@pytest.mark.regression
+@pytest.mark.data_quality
+def test_pokemon_names_are_lowercase_in_list(poke_client):
+    resp = poke_client.get_pokemon_list(limit=20, offset=0)
+    assert resp.status_code == 200
+
+    results = resp.json()["results"]
+    for entry in results:
+        name = entry["name"]
+        assert name == name.lower(), f"Expected lowercase name, got '{name}"
+
