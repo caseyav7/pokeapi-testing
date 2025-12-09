@@ -77,3 +77,18 @@ def test_pokemon_base_stats_are_in_reasonable_range(poke_client, pokemon_name):
             f"{pokemon_name} has unrealistic base_stat for {stat_name}: {base} "
             "(expected between 1 and 255)"
         )
+
+@pytest.mark.regression
+@pytest.mark.data_quality
+@pytest.mark.parametrize("pokemon_name", ["pikachu", "bulbasaur", "charmander"])
+def test_pokemon_height_weight_are_positive(poke_client, pokemon_name):
+    resp = poke_client.get_pokemon(pokemon_name)
+    assert resp.status_code == 200
+    data = resp.json()
+    height = data["height"]
+    weight = data["weight"]
+    assert isinstance(height, int), f"{pokemon_name} has non-int height: {height}"
+    assert isinstance(weight, int), f"{pokemon_name} has non-int weight: {weight}"
+    assert height > 0, ()
+    assert weight > 0, ()
+
