@@ -73,3 +73,21 @@ def test_pokemon_names_are_lowercase_in_list(poke_client):
         name = entry["name"]
         assert name == name.lower(), f"Expected lowercase name, got '{name}"
 
+@pytest.mark.regression
+def test_pokemon_pagination_do_not_overlap(poke_client):
+    resp_page1 = poke_client.get_pokemon_list(limit=10, offset=0)
+    resp_page2 = poke_client.get_pokemon_list(limit=10, offset=10)
+    assert resp_page1.status_code == 200
+    assert resp_page2.status_code == 200
+
+    data1 = resp_page1.json()["results"]
+    data2 = resp_page2.json()["results"]
+
+    names_page1 = {p["name"] for p in data1}
+    names_page2 = {p["name"] for p in data2}
+
+    assert len(names_page1) > 0
+    assert len(names_page2) > 0
+
+    overlap = names_page1 & names_page2
+    assert not overlap, f"Expected no overlap between pages, but found: {overlap}"
