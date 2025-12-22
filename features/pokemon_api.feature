@@ -54,6 +54,17 @@ Feature: PokeAPI - Pokemon endpoints
       | 4  |
       | 25 |
 
+  Scenario Outline: Case-insensitive names should work (200)
+    When I request the Pokemon with name "<name>"
+    Then the response status code should be 200
+    And the response JSON "name" field should be "<lower_case>"
+
+    Examples:
+      | name       | lower_case  |
+      | Pikachu    | pikachu     |
+      | Bulbasaur  | bulbasaur   |
+      | Charmander | charmander  |
+
   # -------------------------
   # NEGATIVE CASES
   # -------------------------
@@ -76,28 +87,26 @@ Feature: PokeAPI - Pokemon endpoints
       | 999999 |
       | 123456 |
 
-  Scenario Outline: Invalid id formats return 404
+  Scenario Outline: Invalid id formats return <status>
     When I request the Pokemon with id "<id>"
-    Then the response status code should be 404
+    Then the response status code should be <status>
 
     Examples:
-      | id  |
-      | 0   |
-      | -1  |
-      | 1.5 |
-      | abc |
+      | id  | status |
+      | 0   | 404    |
+      | -1  | 404    |
+      | 1.5 | 400    |
+      | abc | 404    |
 
-  Scenario Outline: Invalid name returns 404
+  Scenario Outline: Invalid name returns <status>
     When I request an invalid Pokemon name of "<name>"
-    Then the response status code should be 404
+    Then the response status code should be <status>
 
     Examples:
-      | name       |
-      | Pikachu    |
-      | pikachu%20 |
-      | pika-chu   |
-      |  pikachu   |
-      | pikachu    |
-      | " "        |
-      | "   "      |
+      | name           | status |
+      | pikachu%20     | 400    |
+      | pika-chu       | 404    |
+      | <SPACE>        | 400    |
+      | <TRIPLE_SPACE> | 400    |
+
 
