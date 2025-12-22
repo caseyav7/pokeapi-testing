@@ -123,6 +123,7 @@ def test_pokemon_species_url_returns_200(poke_client, pokemon_name):
         f"Species URL for {pokemon_name} returned {species_resp.status_code},"
         f"body: {species_resp.text}"
     )
+
 @pytest.mark.regression
 @pytest.mark.data_quality
 @pytest.mark.parametrize("pokemon_name", ["pikachu", "bulbasaur", "charmander"])

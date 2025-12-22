@@ -2,42 +2,121 @@ Feature: PokeAPI - Pokemon endpoints # features/pokemon_api.feature:1
   As a QA engineer
   I want to validate the Pokemon endpoints of PokeAPI
   So that I can ensure basic functionality and responses are correct
-  Scenario: Get default list of Pokemon                         # features/pokemon_api.feature:6
-    When I request the default Pokemon list                     # features/steps/pokemon_steps.py:11
-    Then the response status code should be 200                 # features/steps/pokemon_steps.py:29
-    And the response should contain a non-empty "results" array # features/steps/pokemon_steps.py:37
+  Scenario: Get default list of Pokemon                         # features/pokemon_api.feature:10
+    When I request the default Pokemon list                     # features/steps/pokemon_steps.py:14
+    Then the response status code should be 200                 # features/steps/pokemon_steps.py:48
+    And the response should contain a non-empty "results" array # features/steps/pokemon_steps.py:56
 
-  Scenario Outline: Get Pokemon by name -- @1.1            # features/pokemon_api.feature:18
-    When I request the Pokemon with name "pikachu"         # features/steps/pokemon_steps.py:17
-    Then the response status code should be 200            # features/steps/pokemon_steps.py:29
-    And the response JSON "name" field should be "pikachu" # features/steps/pokemon_steps.py:45
+  Scenario Outline: Get Pokemon list with pagination -- @1.1      # features/pokemon_api.feature:22
+    When I request the Pokemon list with limit "5" and offset "0" # features/steps/pokemon_steps.py:19
+    Then the response status code should be 200                   # features/steps/pokemon_steps.py:48
+    And the response should contain exactly 5 results             # features/steps/pokemon_steps.py:64
 
-  Scenario Outline: Get Pokemon by name -- @1.2              # features/pokemon_api.feature:19
-    When I request the Pokemon with name "bulbasaur"         # features/steps/pokemon_steps.py:17
-    Then the response status code should be 200              # features/steps/pokemon_steps.py:29
-    And the response JSON "name" field should be "bulbasaur" # features/steps/pokemon_steps.py:45
+  Scenario Outline: Get Pokemon list with pagination -- @1.2        # features/pokemon_api.feature:23
+    When I request the Pokemon list with limit "10" and offset "20" # features/steps/pokemon_steps.py:19
+    Then the response status code should be 200                     # features/steps/pokemon_steps.py:48
+    And the response should contain exactly 10 results              # features/steps/pokemon_steps.py:64
 
-  Scenario Outline: Get Pokemon by name -- @1.3               # features/pokemon_api.feature:20
-    When I request the Pokemon with name "charmander"         # features/steps/pokemon_steps.py:17
-    Then the response status code should be 200               # features/steps/pokemon_steps.py:29
-    And the response JSON "name" field should be "charmander" # features/steps/pokemon_steps.py:45
+  Scenario Outline: Get Pokemon list with pagination -- @1.3        # features/pokemon_api.feature:24
+    When I request the Pokemon list with limit "15" and offset "30" # features/steps/pokemon_steps.py:19
+    Then the response status code should be 200                     # features/steps/pokemon_steps.py:48
+    And the response should contain exactly 15 results              # features/steps/pokemon_steps.py:64
 
-  Scenario Outline: Get Pokemon by id -- @1.1    # features/pokemon_api.feature:29
-    When I request the Pokemon with id "1"       # features/steps/pokemon_steps.py:23
-    Then the response status code should be 200  # features/steps/pokemon_steps.py:29
-    And the response JSON "id" field should be 1 # features/steps/pokemon_steps.py:52
+  Scenario: Pokemon list pages should not overlap                  # features/pokemon_api.feature:26
+    When I request the Pokemon list with limit "10" and offset "0" # features/steps/pokemon_steps.py:19
+    And I request the Pokemon list with limit "10" and offset "10" # features/steps/pokemon_steps.py:19
+    Then the two Pokemon result sets should not overlap            # features/steps/pokemon_steps.py:87
 
-  Scenario Outline: Get Pokemon by id -- @1.2    # features/pokemon_api.feature:30
-    When I request the Pokemon with id "4"       # features/steps/pokemon_steps.py:23
-    Then the response status code should be 200  # features/steps/pokemon_steps.py:29
-    And the response JSON "id" field should be 4 # features/steps/pokemon_steps.py:52
+  Scenario Outline: Get Pokemon by name -- @1.1            # features/pokemon_api.feature:42
+    When I request the Pokemon with name "pikachu"         # features/steps/pokemon_steps.py:9
+    Then the response status code should be 200            # features/steps/pokemon_steps.py:48
+    And the response JSON "name" field should be "pikachu" # features/steps/pokemon_steps.py:74
 
-  Scenario Outline: Get Pokemon by id -- @1.3     # features/pokemon_api.feature:31
-    When I request the Pokemon with id "25"       # features/steps/pokemon_steps.py:23
-    Then the response status code should be 200   # features/steps/pokemon_steps.py:29
-    And the response JSON "id" field should be 25 # features/steps/pokemon_steps.py:52
+  Scenario Outline: Get Pokemon by name -- @1.2              # features/pokemon_api.feature:43
+    When I request the Pokemon with name "bulbasaur"         # features/steps/pokemon_steps.py:9
+    Then the response status code should be 200              # features/steps/pokemon_steps.py:48
+    And the response JSON "name" field should be "bulbasaur" # features/steps/pokemon_steps.py:74
 
-  Scenario: Non-existent Pokemon should return 404                  # features/pokemon_api.feature:33
-    When I request the Pokemon with name "definitely-not-real-9999" # features/steps/pokemon_steps.py:17
-    Then the response status code should be 404                     # features/steps/pokemon_steps.py:29
+  Scenario Outline: Get Pokemon by name -- @1.3               # features/pokemon_api.feature:44
+    When I request the Pokemon with name "charmander"         # features/steps/pokemon_steps.py:9
+    Then the response status code should be 200               # features/steps/pokemon_steps.py:48
+    And the response JSON "name" field should be "charmander" # features/steps/pokemon_steps.py:74
+
+  Scenario Outline: Get Pokemon by id -- @1.1    # features/pokemon_api.feature:53
+    When I request the Pokemon with id "1"       # features/steps/pokemon_steps.py:42
+    Then the response status code should be 200  # features/steps/pokemon_steps.py:48
+    And the response JSON "id" field should be 1 # features/steps/pokemon_steps.py:81
+
+  Scenario Outline: Get Pokemon by id -- @1.2    # features/pokemon_api.feature:54
+    When I request the Pokemon with id "4"       # features/steps/pokemon_steps.py:42
+    Then the response status code should be 200  # features/steps/pokemon_steps.py:48
+    And the response JSON "id" field should be 4 # features/steps/pokemon_steps.py:81
+
+  Scenario Outline: Get Pokemon by id -- @1.3     # features/pokemon_api.feature:55
+    When I request the Pokemon with id "25"       # features/steps/pokemon_steps.py:42
+    Then the response status code should be 200   # features/steps/pokemon_steps.py:48
+    And the response JSON "id" field should be 25 # features/steps/pokemon_steps.py:81
+
+  Scenario Outline: Case-insensitive names should work (200) -- @1.1   # features/pokemon_api.feature:64
+    When I request the Pokemon with name "Pikachu"                     # features/steps/pokemon_steps.py:9
+    Then the response status code should be 200                        # features/steps/pokemon_steps.py:48
+    And the response JSON "name" field should be "pikachu"             # features/steps/pokemon_steps.py:74
+
+  Scenario Outline: Case-insensitive names should work (200) -- @1.2   # features/pokemon_api.feature:65
+    When I request the Pokemon with name "Bulbasaur"                   # features/steps/pokemon_steps.py:9
+    Then the response status code should be 200                        # features/steps/pokemon_steps.py:48
+    And the response JSON "name" field should be "bulbasaur"           # features/steps/pokemon_steps.py:74
+
+  Scenario Outline: Case-insensitive names should work (200) -- @1.3   # features/pokemon_api.feature:66
+    When I request the Pokemon with name "Charmander"                  # features/steps/pokemon_steps.py:9
+    Then the response status code should be 200                        # features/steps/pokemon_steps.py:48
+    And the response JSON "name" field should be "charmander"          # features/steps/pokemon_steps.py:74
+
+  Scenario Outline: Non-existent Pokemon returns 404 -- @1.1        # features/pokemon_api.feature:78
+    When I request the Pokemon with name "definitely-not-real-9999" # features/steps/pokemon_steps.py:9
+    Then the response status code should be 404                     # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Non-existent Pokemon returns 404 -- @1.2   # features/pokemon_api.feature:79
+    When I request the Pokemon with name "missingno-12345"     # features/steps/pokemon_steps.py:9
+    Then the response status code should be 404                # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Non-existent Pokemon by id returns 404 -- @1.1   # features/pokemon_api.feature:87
+    When I request the Pokemon with id "999999"                      # features/steps/pokemon_steps.py:42
+    Then the response status code should be 404                      # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Non-existent Pokemon by id returns 404 -- @1.2   # features/pokemon_api.feature:88
+    When I request the Pokemon with id "123456"                      # features/steps/pokemon_steps.py:42
+    Then the response status code should be 404                      # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Invalid id formats return 404 -- @1.1   # features/pokemon_api.feature:96
+    When I request the Pokemon with id "0"                  # features/steps/pokemon_steps.py:42
+    Then the response status code should be 404             # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Invalid id formats return 404 -- @1.2   # features/pokemon_api.feature:97
+    When I request the Pokemon with id "-1"                 # features/steps/pokemon_steps.py:42
+    Then the response status code should be 404             # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Invalid id formats return 400 -- @1.3   # features/pokemon_api.feature:98
+    When I request the Pokemon with id "1.5"                # features/steps/pokemon_steps.py:42
+    Then the response status code should be 400             # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Invalid id formats return 404 -- @1.4   # features/pokemon_api.feature:99
+    When I request the Pokemon with id "abc"                # features/steps/pokemon_steps.py:42
+    Then the response status code should be 404             # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Invalid name returns 400 -- @1.1       # features/pokemon_api.feature:107
+    When I request an invalid Pokemon name of "pikachu%20" # features/steps/pokemon_steps.py:29
+    Then the response status code should be 400            # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Invalid name returns 404 -- @1.2     # features/pokemon_api.feature:108
+    When I request an invalid Pokemon name of "pika-chu" # features/steps/pokemon_steps.py:29
+    Then the response status code should be 404          # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Invalid name returns 400 -- @1.3    # features/pokemon_api.feature:109
+    When I request an invalid Pokemon name of "<SPACE>" # features/steps/pokemon_steps.py:29
+    Then the response status code should be 400         # features/steps/pokemon_steps.py:48
+
+  Scenario Outline: Invalid name returns 400 -- @1.4           # features/pokemon_api.feature:110
+    When I request an invalid Pokemon name of "<TRIPLE_SPACE>" # features/steps/pokemon_steps.py:29
+    Then the response status code should be 400                # features/steps/pokemon_steps.py:48
 

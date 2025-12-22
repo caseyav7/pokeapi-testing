@@ -25,9 +25,6 @@ def test_list_pokemon_structure(poke_client):
         assert "name" in entry
         assert "url" in entry
 
-
-import pytest
-
 @pytest.mark.regression
 @pytest.mark.parametrize("limit,offset", [
     (5, 0),
