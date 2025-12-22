@@ -69,26 +69,38 @@ Behave will automatically load:
 
 ```
 pokeapi-testing/
-├── README.md
-├── requirements.txt
-├── pytest.ini
 │
 ├── src/
-│   └── api_client.py
+│   ├── __init__.py
+│   ├── api_client.py              
+│   └── graphql_client.py          
 │
 ├── tests/
-│   ├── conftest.py
-│   ├── test_pokemon_list.py
-│   ├── test_single_pokemon.py
-│   └── test_negative_pokemon.py
+│   ├── __init__.py
+│   ├── conftest.py                
+│
+│   ├── rest/
+│   │   ├── __init__.py
+│   │   ├── test_pokemon_list.py   
+│   │   ├── test_single_pokemon.py 
+│   │   └── test_negative_pokemon.py
+│
+│   └── graphql/                        # Coming Soon!
+│       ├── __init__.py
+│       ├── test_graphql_smoke.py  
+│       └── test_graphql_negative.py
 │
 ├── features/
-│   ├── pokemon_api.feature
-│   └── steps/
-│       ├── pokemon_steps.py
-│       └── __init__.py
+│   ├── pokemon_api.feature        
 │
-└── behave.ini
+│   └── steps/
+│       ├── __init__.py
+│       └── pokemon_steps.py       
+│
+├── pytest.ini                     
+├── requirements.txt               
+├── README.md                      
+└── .gitignore
 ```
 
 <p align="center">
