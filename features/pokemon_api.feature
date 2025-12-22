@@ -33,3 +33,7 @@ Feature: PokeAPI - Pokemon endpoints
   Scenario: Non-existent Pokemon should return 404
     When I request the Pokemon with name "definitely-not-real-9999"
     Then the response status code should be 404
+
+  Scenario: Non-existent Pokemon by id returns 404
+    When I request the Pokemon with id "999999"
+    Then the response status code should be 404
